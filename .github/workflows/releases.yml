@@ -33,7 +33,12 @@ jobs:
             styles.css
             obsidian-git-zh-cn-2.39.1.zip
       - name: Publish release
-        if: startsWith(github.ref, 'refs/tags/')
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" main.js manifest.json styles.css obsidian-git-zh-cn-2.39.1.zip --title 'Git 简体中文 2.39.1' --notes '基于官方 2.39.0，独立插件 ID obsidian-git-zh-cn，支持中文界面和首次设置导入。各平台使用同一安装包；移动端保留上游限制。'
+        run: |
+          version=$(node -p "JSON.parse(require('fs').readFileSync('manifest.json', 'utf8')).version")
+          if gh release view "$version" >/dev/null 2>&1; then
+            gh release upload "$version" main.js manifest.json styles.css obsidian-git-zh-cn-2.39.1.zip
+          else
+            gh release create "$version" main.js manifest.json styles.css obsidian-git-zh-cn-2.39.1.zip --target "$GITHUB_SHA" --title "Git 简体中文 $version" --notes '基于官方 2.39.0，独立插件 ID obsidian-git-zh-cn。中文命令、设置和版本管理面板，支持首次设置导入。各平台使用同一安装包；移动端保留上游限制。'
+          fi
