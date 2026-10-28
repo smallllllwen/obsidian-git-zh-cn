@@ -7,8 +7,8 @@
     "sha256": "d5a74036cf17c1a02957c1f33f59e47cf3af83525641c4374ca1fa09d95f3eb4",
     "asset_digest_verified": true
   },
-  "version": "2.39.1",
-  "translatedOccurrences": 396,
+  "version": "2.39.2",
+  "translatedOccurrences": 401,
   "namespaceChanges": 46,
   "integrityChecks": [
     "JavaScript syntax",
@@ -74,6 +74,11 @@
       "kind": "literal"
     },
     {
+      "before": "obsidian-git",
+      "after": "obsidian-git-zh-cn",
+      "kind": "literal"
+    },
+    {
       "before": "Fetching",
       "after": "获取中",
       "kind": "literal"
@@ -91,6 +96,26 @@
     {
       "before": "Checking out",
       "after": "切换分支中",
+      "kind": "literal"
+    },
+    {
+      "before": "obsidian-git",
+      "after": "obsidian-git-zh-cn",
+      "kind": "literal"
+    },
+    {
+      "before": "obsidian-git",
+      "after": "obsidian-git-zh-cn",
+      "kind": "literal"
+    },
+    {
+      "before": "/plugins/obsidian-git/",
+      "after": "/plugins/obsidian-git-zh-cn/",
+      "kind": "literal"
+    },
+    {
+      "before": "obsidian-git",
+      "after": "obsidian-git-zh-cn",
       "kind": "literal"
     },
     {

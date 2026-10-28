@@ -28,6 +28,8 @@ function translateHtml(value) {
 }
 function translate(value, template = false) {
     if (Object.hasOwn(views, value)) return views[value];
+    if (value === "obsidian-git") return "obsidian-git-zh-cn";
+    if (value.includes("/plugins/obsidian-git/")) return value.replaceAll("/plugins/obsidian-git/", "/plugins/obsidian-git-zh-cn/");
     if (value.startsWith("obsidian-git:")) return "obsidian-git-zh-cn:" + value.slice("obsidian-git:".length);
     if (Object.hasOwn(dictionary.strings, value)) return dictionary.strings[value];
     if (template && Object.hasOwn(dictionary.fragments, value)) return dictionary.fragments[value];
@@ -78,7 +80,11 @@ function signature(ast) {
     return { commands, requires, protocol, structure };
 }
 if (JSON.stringify(signature(tree)) !== JSON.stringify(signature(localizedTree))) throw new Error("汉化改变了程序结构、命令 ID、依赖或 Git 协议参数，构建已终止。");
+walk(localizedTree, (node) => {
+    if (node.type === "Literal" && (node.value === "obsidian-git" || (typeof node.value === "string" && node.value.includes("/plugins/obsidian-git/")))) throw new Error("发行文件仍引用原插件目录，构建已终止。");
+});
+const version = JSON.parse(fs.readFileSync(path.join(root, "manifest.json"), "utf8")).version;
 const runtime = `\n;(() => {\nconst original = module.exports;\nconst createChineseGit = ${wrapIdentity.toString()};\nmodule.exports = { ...original, default: createChineseGit(original.default, require("obsidian").Notice) };\n})();\n`;
 fs.writeFileSync(output, localized + runtime);
-fs.writeFileSync(path.join(root, "zh-build/build-report.json"), JSON.stringify({ upstream: config, version: "2.39.1", translatedOccurrences: replacements.filter(x => !x.after.startsWith("obsidian-git-zh-cn:")).length, namespaceChanges: replacements.filter(x => x.after.startsWith("obsidian-git-zh-cn:")).length, integrityChecks: ["JavaScript syntax", "unchanged AST structure", "unchanged command IDs", "unchanged runtime imports", "unchanged Git protocol arguments"], substitutions: replacements.map(({ before, after, kind }) => ({ before, after, kind })) }, null, 2) + "\n");
+fs.writeFileSync(path.join(root, "zh-build/build-report.json"), JSON.stringify({ upstream: config, version, translatedOccurrences: replacements.filter(x => !x.after.startsWith("obsidian-git-zh-cn:")).length, namespaceChanges: replacements.filter(x => x.after.startsWith("obsidian-git-zh-cn:")).length, integrityChecks: ["JavaScript syntax", "unchanged AST structure", "unchanged command IDs", "unchanged runtime imports", "unchanged Git protocol arguments"], substitutions: replacements.map(({ before, after, kind }) => ({ before, after, kind })) }, null, 2) + "\n");
 console.log(`Built ${output}: ${replacements.length} text/namespace substitutions; syntax and Git contract checks passed.`);

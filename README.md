@@ -3,14 +3,14 @@
 基于 [Vinzent03/obsidian-git 2.39.0](https://github.com/Vinzent03/obsidian-git/tree/2.39.0) 的独立简体中文版本，保留原作者与 MIT 许可证。
 
 - 独立插件 ID：`obsidian-git-zh-cn`
-- 当前汉化版：`2.39.1`
+- 当前汉化版：`2.39.2`
 - 中文命令、设置说明、下拉选项、版本管理面板、历史视图、常见通知和状态栏。
 - 保留上游桌面原生 Git 与移动端 JavaScript Git 实现。
 - 首次启用时导入本笔记库原版 Git 的设置，不覆盖已有汉化版设置。
 
 ## 下载安装
 
-**[下载 2.39.1 安装包](https://github.com/smallllllwen/obsidian-git-zh-cn/raw/refs/heads/zh-cn/downloads/obsidian-git-zh-cn-2.39.1.zip)** · [查看发行版本](https://github.com/smallllllwen/obsidian-git-zh-cn/releases)
+**[下载 2.39.2 安装包](https://github.com/smallllllwen/obsidian-git-zh-cn/releases/download/2.39.2/obsidian-git-zh-cn-2.39.2.zip)** · [查看发行版本](https://github.com/smallllllwen/obsidian-git-zh-cn/releases)
 
 1. 在 Obsidian 设置 → 第三方插件中，先关闭原版 **Git**。
 2. 下载并解压安装包，将其中的 `obsidian-git-zh-cn` 文件夹放到当前笔记库的 `.obsidian/plugins/` 下。使用自定义配置目录时，改放到该配置目录的 `plugins/` 下。
@@ -42,7 +42,7 @@ node --check main.js
 node --test zh-build/tests/*.test.cjs
 ```
 
-`zh-build/upstream/main.js` 是上游 2.39.0 发行文件，SHA-256 记录在 `provenance.json`。构建脚本通过 JavaScript AST 定位文本、替换中文词典、隔离事件/视图命名空间，并添加独立 ID 的设置迁移入口。构建前校验上游文件，构建后检查语法、命令 ID、运行时依赖与 Git 协议参数。词典在 `zh-build/translations/zh-CN.json`，报告在 `zh-build/build-report.json`。
+`zh-build/upstream/main.js` 是上游 2.39.0 发行文件，SHA-256 记录在 `provenance.json`。构建脚本通过 JavaScript AST 定位文本、替换中文词典、隔离插件目录及事件/视图命名空间，并添加独立 ID 的设置迁移入口。构建前校验上游文件，构建后检查语法、命令 ID、运行时依赖与 Git 协议参数。词典在 `zh-build/translations/zh-CN.json`，报告在 `zh-build/build-report.json`。
 
 也可先用上游 pnpm 构建源码，再将构建产物路径传给本地化脚本：
 

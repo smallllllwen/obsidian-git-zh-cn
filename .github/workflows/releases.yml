@@ -20,25 +20,26 @@ jobs:
           node --test zh-build/tests/*.test.cjs
       - name: Package
         run: |
+          version=$(node -p "JSON.parse(require('fs').readFileSync('manifest.json', 'utf8')).version")
           mkdir -p package/obsidian-git-zh-cn
           cp main.js manifest.json styles.css LICENSE package/obsidian-git-zh-cn/
           cd package
-          zip -r ../obsidian-git-zh-cn-2.39.1.zip obsidian-git-zh-cn
+          zip -r "../obsidian-git-zh-cn-$version.zip" obsidian-git-zh-cn
       - uses: actions/upload-artifact@v4
         with:
-          name: obsidian-git-zh-cn-2.39.1
+          name: obsidian-git-zh-cn
           path: |
             main.js
             manifest.json
             styles.css
-            obsidian-git-zh-cn-2.39.1.zip
+            obsidian-git-zh-cn-*.zip
       - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           version=$(node -p "JSON.parse(require('fs').readFileSync('manifest.json', 'utf8')).version")
           if gh release view "$version" >/dev/null 2>&1; then
-            gh release upload "$version" main.js manifest.json styles.css obsidian-git-zh-cn-2.39.1.zip
+            gh release upload "$version" main.js manifest.json styles.css "obsidian-git-zh-cn-$version.zip"
           else
-            gh release create "$version" main.js manifest.json styles.css obsidian-git-zh-cn-2.39.1.zip --target "$GITHUB_SHA" --title "Git 简体中文 $version" --notes '基于官方 2.39.0，独立插件 ID obsidian-git-zh-cn。中文命令、设置和版本管理面板，支持首次设置导入。各平台使用同一安装包；移动端保留上游限制。'
+            gh release create "$version" main.js manifest.json styles.css "obsidian-git-zh-cn-$version.zip" --target "$GITHUB_SHA" --title "Git 简体中文 $version" --notes '基于官方 2.39.0，独立插件 ID obsidian-git-zh-cn，含独立的认证脚本目录。中文命令、设置和版本管理面板，支持首次设置导入。各平台使用同一安装包；移动端保留上游限制。'
           fi
