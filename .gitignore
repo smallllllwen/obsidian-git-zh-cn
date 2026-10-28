@@ -16,3 +16,9 @@ yarn.lock
 .vscode
 
 .DS_Store
+
+
+# Chinese distribution files are intentionally committed for manual installation.
+!main.js
+.qa-vault/
+zh-build/strings-inventory.json

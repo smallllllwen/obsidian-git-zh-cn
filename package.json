@@ -1,6 +1,6 @@
 {
-    "name": "obsidian-git",
-    "version": "2.39.0",
+    "name": "obsidian-git-zh-cn",
+    "version": "2.39.1",
     "description": "Integrate Git version control with automatic backup and other advanced features in Obsidian.md",
     "main": "main.js",
     "scripts": {
@@ -14,7 +14,9 @@
         "test": "vitest run",
         "test:watch": "vitest",
         "test:coverage": "vitest run --coverage",
-        "all": "pnpm run tsc && pnpm run svelte && pnpm run format && pnpm run lint && pnpm run test"
+        "all": "pnpm run tsc && pnpm run svelte && pnpm run format && pnpm run lint && pnpm run test",
+        "build:zh": "node zh-build/scripts/localize.mjs",
+        "test:zh": "node --test zh-build/tests/*.test.cjs"
     },
     "keywords": [],
     "author": "Vinzent03",
